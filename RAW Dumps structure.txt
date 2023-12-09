@@ -1,0 +1,35 @@
+RAW Pivot:
+==========
+
+filter - Team
+Columns, Values - Open Date
+
+
+Team:
+-----
+Radio
+BSM Loyalty, Digital Service, DSS-VAS, IN, VAS
+Core
+
+
+Assign Pivot:
+=============
+
+except all:
+===========
+filter - Team
+Columns - Assigned Date
+Values - Sub Category
+
+Team:
+-----
+Radio
+BSM Loyalty, Digital Service, IN, VAS
+Core
+
+
+all
+====
+Rows - SUB_CATEGORY
+Columns - ASSIGNED_DATE
+Values - Count of ASSIGNED_DATE
