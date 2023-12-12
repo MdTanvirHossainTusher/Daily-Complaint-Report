@@ -1,5 +1,5 @@
 import win32com.client
-
+import openpyxl
 
 def pivot_table_creation(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name):
 
@@ -59,7 +59,10 @@ def filter_multiple_items(workbook, ws_data, ws_report, output_starting_cell, pi
     pivot_field_product.EnableMultiplePageItems = True
 
     for item_name in items_to_exclude:
-        pivot_field_product.PivotItems(item_name).Visible = False
+        try:
+            pivot_field_product.PivotItems(item_name).Visible = False
+        except Exception as e:
+            print(f"Item '{item_name}' not found in the pivot table. Skipping...")
 
 
 def filter_all(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name):
@@ -87,13 +90,18 @@ def insert_pt_field_set1(pt):
 
 
 def filter_item():
+
+    open_workbook = openpyxl.load_workbook(r'Raw Dump.xlsx')
+    assigned_pivot_sheet_name = "Assigned Pivot"
+    open_workbook.create_sheet(title=assigned_pivot_sheet_name)
+    open_workbook.save(r'Raw Dump.xlsx')
+
     excel = win32com.client.Dispatch("Excel.Application")
     excel.Visible = True  # Optional: Set to True if you want to see Excel while the code is running
 
-    # workbook = excel.Workbooks.Open(r'I:\Openpyxl_tutorial\Parts\pivot_table_filtering.xlsx')
-    workbook = excel.Workbooks.Open(r'I:\Openpyxl_tutorial\Parts\working_raw_dump.xlsx')
-    ws_data = workbook.Worksheets("Check Assign")
-    ws_report = workbook.Worksheets("Check Assign Piv")
+    workbook = excel.Workbooks.Open(r'I:\Openpyxl_tutorial\Parts\Raw Dump.xlsx')
+    ws_data = workbook.Worksheets("Assigned")
+    ws_report = workbook.Worksheets("Assigned Pivot")
 
     # Radio
     output_starting_cell = "A3"
@@ -118,7 +126,7 @@ def filter_item():
     pivot_table_name = "PivotTable4"
     filter_all(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name)
 
-    workbook.SaveAs("I:\Openpyxl_tutorial\Parts\working_raw_dump_final.xlsx")  # Optional: Save the changes
+    workbook.SaveAs("I:\Openpyxl_tutorial\Parts\Raw Dump.xlsx")  # Optional: Save the changes
     workbook.Close()
 
     excel.Quit()

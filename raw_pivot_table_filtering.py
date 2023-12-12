@@ -1,4 +1,5 @@
 import win32com.client
+import openpyxl
 
 
 def pivot_table_creation(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name):
@@ -6,7 +7,7 @@ def pivot_table_creation(workbook, ws_data, ws_report, output_starting_cell, piv
     pt_cache = workbook.PivotCaches().Create(1, ws_data.Range("A1").CurrentRegion)
     pt = pt_cache.CreatePivotTable(ws_report.Range(output_starting_cell), pivot_table_name)
     pt.TableStyle2 = "PivotStyleMedium9"
-    insert_pt_field_set1(pt)  # value insert
+    insert_pt_field_set1(pt)
 
     pivot_table = ws_report.PivotTables(pivot_table_name)
     pivot_field_product = pivot_table.PivotFields("Team")
@@ -51,12 +52,18 @@ def insert_pt_field_set1(pt):
 
 
 def filter_item():
+    open_workbook = openpyxl.load_workbook(r'Raw Dump.xlsx')
+    raw_pivot_sheet_name = "RAW Pivot"
+    open_workbook.create_sheet(title=raw_pivot_sheet_name)
+    open_workbook.save(r'Raw Dump.xlsx')
+
     excel = win32com.client.Dispatch("Excel.Application")
     excel.Visible = True  # Optional: Set to True if you want to see Excel while the code is running
 
-    workbook = excel.Workbooks.Open(r'I:\Openpyxl_tutorial\Parts\pivot_table_filtering.xlsx')
-    ws_data = workbook.Worksheets("Check RAW")
-    ws_report = workbook.Worksheets("Check RAW Piv")
+    workbook = excel.Workbooks.Open(r'I:\Openpyxl_tutorial\Parts\Raw Dump.xlsx')
+
+    ws_data = workbook.Worksheets("RAW")
+    ws_report = workbook.Worksheets("RAW Pivot")
 
     # Radio
     output_starting_cell = "A3"
@@ -76,7 +83,7 @@ def filter_item():
     filtered_team_name = "Core"
     filter_single_item(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name, filtered_team_name)
 
-    workbook.SaveAs("I:\Openpyxl_tutorial\Parts\working_raw_dump.xlsx")  # Optional: Save the changes
+    workbook.SaveAs("I:\Openpyxl_tutorial\Parts\Raw Dump.xlsx")  # Optional: Save the changes
     workbook.Close()
 
     excel.Quit()
