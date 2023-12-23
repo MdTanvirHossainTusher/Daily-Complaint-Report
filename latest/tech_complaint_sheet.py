@@ -1,5 +1,4 @@
 import openpyxl
-from datetime import datetime
 from datetime import datetime, timedelta
 
 daily_technology_file_name = r'Daily Technology Complaint Report2.xlsx'
@@ -22,14 +21,7 @@ def load_worksheet(technology_wb, raw_dump_wb):
     return technology_sheet, raw_pivot_sheet, assign_pivot_sheet
 
 
-# target_dates = ['2-Dec', '3-Dec']
-# target_year = 2023
-
-
 def insert_dates_to_list(assign_from_date, assign_to_date):
-    # assign_from_date = "10-Dec-23"
-    # assign_to_date = "12-Dec-23"
-
     # Convert strings to datetime objects
     from_date_obj = datetime.strptime(assign_from_date, "%d-%b-%y")
     to_date_obj = datetime.strptime(assign_to_date, "%d-%b-%y")
@@ -38,7 +30,7 @@ def insert_dates_to_list(assign_from_date, assign_to_date):
     # Generate a list of date strings
     date_list = [from_date_obj + timedelta(days=i) for i in range((to_date_obj - from_date_obj).days + 1)]
     formatted_date_list = [date.strftime("%d-%b") for date in date_list]
-    print(current_year, formatted_date_list, end=" ----------------------\n ")
+    # print(current_year, formatted_date_list, end=" ----------------------\n ")
     return current_year, formatted_date_list
 
 
@@ -64,7 +56,6 @@ def get_column_indices(technology_sheet, formatted_dates):
             if str(technology_sheet.cell(row=1, column=col_num).value).split(' ')[0] == target_date:
                 column_index = col_num
                 column_indices.append(column_index)
-                # print(column_index, end='---\n')
                 break
 
         # Check if the column was found
@@ -130,8 +121,8 @@ def fill_ccd_technology_fields(technology_sheet, raw_pivot_sheet, assign_pivot_s
 
 
 def save_file(technology_wb):
-    # technology_wb.save(daily_technology_file_name)
-    technology_wb.save(r'Daily Technology Complaint Report3.xlsx')
+    technology_wb.save(daily_technology_file_name)
+    # technology_wb.save(r'Daily Technology Complaint Report3.xlsx')
 
 # Close the workbook
 # technology_wb.close()

@@ -8,6 +8,9 @@ from tkcalendar import DateEntry
 import create_raw as crd
 import raw_pivot_table_filtering as raw_pivot
 import assign_pivot_table_filtering as assign_pivot
+import regional_file_create as create_regional
+import lat_long_cleaning_process as clean_lat_long
+import lat_long_file_code as lat_long
 
 
 daily_dump_file_name_csv = ""
@@ -132,7 +135,7 @@ def get_path_directory():
     return directory_name.replace('/', '\\')
 
 
-def call_daily_dump_processes():
+def daily_dump_processes():
     csv_to_excel_conversion()
     daily_dump, category_team = load_workbook(daily_dump_file_name_excel)
     daily_dump_sheet, category_team_sheet = load_worksheet(daily_dump, category_team)
@@ -144,15 +147,29 @@ def call_daily_dump_processes():
 
 
 def run_process():
-    call_daily_dump_processes()
+    daily_dump_processes()
     print("saving...")
-    crd.call_raw_dump_processes(open_from_date, open_to_date, assign_from_date, assign_to_date)
+    crd.raw_dump_processes(open_from_date, open_to_date, assign_from_date, assign_to_date)
     print("saving2...")
     path_directory = get_path_directory()
     raw_pivot.filter_item(path_directory)
     print("saving3...")
     assign_pivot.filter_item(path_directory)
     print("saving4...")
+    create_regional.regional_file_creation_process(assign_from_date, assign_to_date)
+    print("saving5...")
+    clean_lat_long.lat_long_cleaner()
+    print("saving6...")
+    lat_long.lat_long_file_creation_process()
+    print("saving7...")
+    # regional_zone.regional_file_processing()  # investigate(hbe 186 but amr ase 178)
+    # print("saving8...")
+    # tech_complaint.daily_technology_tech_complaint_sheet_processing(assign_from_date, assign_to_date)
+    # print("saving9...")
+    # voice_data_pivot.regional_voice_data_pivot_table_create(path_directory)
+    # print("saving10...")
+    # region_wise.region_wise_radio_sheet_processing(assign_from_date, assign_to_date)
+    # print("saving11...")
 
     root.destroy()  # Close the GUI window
 
@@ -166,7 +183,6 @@ root.geometry("400x300")  # width and height
 btn_browse_file = tk.Button(root, text="Browse Daily Dump File", command=browse_file)
 btn_browse_file.pack(pady=10)
 
-#################################################
 # Date Selection using tkcalendar
 entry_from_date = DateEntry(root, width=15, justify="center")
 entry_to_date = DateEntry(root, width=15, justify="center")
@@ -180,7 +196,6 @@ entry_to_date.pack(pady=5)
 
 btn_browse_dates = tk.Button(root, text="Apply Dates", command=browse_dates)
 btn_browse_dates.pack(pady=10)
-#################################################
 
 # Run Process Button
 btn_run_process = tk.Button(root, text="Run Process", command=run_process)

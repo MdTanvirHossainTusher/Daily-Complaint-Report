@@ -81,7 +81,7 @@ def save_daily_dump(raw_dump):
     raw_dump.save(output_file)
 
 
-def call_raw_dump_processes(open_from_date, open_to_date, assign_from_date, assign_to_date):
+def raw_dump_processes(open_from_date, open_to_date, assign_from_date, assign_to_date):
 
     daily_dump = load_workbook(daily_dump_to_raw_dump)
     daily_dump_sheet = load_worksheet(daily_dump)

@@ -60,7 +60,7 @@ def filter_item(path_directory):
     open_workbook.save(raw_dump_file_name)
 
     excel = win32com.client.Dispatch("Excel.Application")
-    excel.Visible = True  # Optional: Set to True if you want to see Excel while the code is running
+    excel.Visible = True  # True = want to see Excel while the code is running
 
     file_to_save = os.path.join(path_directory, raw_dump_file_name)
     workbook = excel.Workbooks.Open(file_to_save)
@@ -86,7 +86,7 @@ def filter_item(path_directory):
     filtered_team_name = "Core"
     filter_single_item(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name, filtered_team_name)
 
-    workbook.SaveAs(file_to_save)  # Optional: Save the changes
+    workbook.SaveAs(file_to_save)
     workbook.Close()
 
     excel.Quit()

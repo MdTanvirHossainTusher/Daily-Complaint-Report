@@ -1,6 +1,13 @@
+import os
 import openpyxl
 import pandas as pd
 from openpyxl.styles import Font
+import tkinter as tk
+from tkinter import filedialog
+from tkcalendar import DateEntry
+import tech_complaint_sheet as tech_complaint
+import regional_file_pivot_table as voice_data_pivot
+import region_wise_radio_sheet as region_wise
 
 
 regional_file_name = r'regional.xlsx'
@@ -10,6 +17,11 @@ site_to_cc_file_name_excel = r'Site to CC.xlsx'
 on_air_site_file_name = r'ON AIR SITES DETAILS _230930.xlsx'
 intermediate_regional_file_name = r'Intermediate regional file.xlsx'
 on_air_site_sheet_name = 'Sites'
+
+open_from_date = ""
+open_to_date = ""
+assign_from_date = ""
+assign_to_date = ""
 
 site_id_col_index = 19  # 1 based index
 district_col_index = 20  # 1 based index
@@ -68,6 +80,8 @@ def insert_columns(regional_sheet):
     regional_sheet[sales_heading_cell] = sales_col_name
     regional_sheet[sales_heading_cell].font = Font(bold=True)
 
+    print("columns inserted...\n")
+
     return regional_sheet
 
 
@@ -115,7 +129,7 @@ def fill_empty_cell_with_na(regional_sheet):
             rows[21].value = "#N/A"
 
 
-def fill_tf_column(regional_sheet):
+def fill_tf_column(regional_wb, regional_sheet):
     for rows in regional_sheet.iter_rows():
         if rows[13].value is None:
             continue
@@ -127,6 +141,9 @@ def fill_tf_column(regional_sheet):
             rows[20].value = 'FALSE'
         elif rows[13].value.strip().lower() is None or rows[13].value.strip().lower() == ' ' or rows[13].value.strip().lower() == '':
             rows[20].value = 'TRUE'
+
+    print("all col filled---------------------\n")
+    regional_wb.save(r'regional with filled columns.xlsx')
 
 
 def are_strings_similar(str1, str2, max_allowed_diff=2):
@@ -148,6 +165,8 @@ def clean_tf_column(regional_sheet):
         elif district is not None and calculated_district is not None and are_strings_similar(district, calculated_district, max_allowed_diff=2):
             rows[13].value = rows[19].value
             rows[20].value = 'TRUE'
+
+    print("tf cleaned=========================\n")
 
 
 def remove_false_na_tf_values(regional_sheet):
@@ -171,9 +190,35 @@ def delete_calculated_district_tf_cols(regional_sheet):
 def save_final_regional_file(regional_wb):
     regional_wb.save(final_regional_file_name)
 
-# Close the workbooks
-# regional_wb.close()
-# site_to_cc_wb.close()
+
+def browse_file():
+    global regional_file_name
+    regional_file_name = filedialog.askopenfilename(
+        title="Select Regional File",
+        filetypes=[("Excel Files", "*.xlsx;*.csv"), ("CSV files", "*.csv")]
+    )
+    print(f"Selected File: {regional_file_name}")
+
+
+def browse_dates():
+    global assign_from_date, assign_to_date, open_from_date, open_to_date
+
+    open_from_date = entry_from_date.get_date().strftime("%Y-%m-%d")  # "2023-12-12" --> year-month-date
+    open_to_date = entry_to_date.get_date().strftime("%Y-%m-%d")
+
+    # Convert assign dates to the "12-DEC-23" format
+    assign_from_date = entry_from_date.get_date().strftime("%d-%b-%y").upper()  # "12-DEC-23"
+    assign_to_date = entry_to_date.get_date().strftime("%d-%b-%y").upper()
+
+    print(f"Open From Date: {open_from_date}")
+    print(f"Open To Date: {open_to_date}")
+    print(f"Assign From Date: {assign_from_date}")
+    print(f"Assign To Date: {assign_to_date}")
+
+
+def get_path_directory():
+    directory_name = os.path.dirname(regional_file_name)
+    return directory_name.replace('/', '\\')
 
 
 def regional_file_processing():
@@ -185,9 +230,54 @@ def regional_file_processing():
     fill_site_id_column(regional_sheet, site_to_cc_sheet)
     fill_district_sales_columns(regional_sheet, on_air_site_sheet)
     fill_empty_cell_with_na(regional_sheet)
-    fill_tf_column(regional_sheet)
+    fill_tf_column(regional_wb, regional_sheet)
     clean_tf_column(regional_sheet)
     remove_false_na_tf_values(regional_sheet)
     save_file_with_district_tf_columns(regional_wb)
     delete_calculated_district_tf_cols(regional_sheet)
     save_final_regional_file(regional_wb)
+
+
+def run_process():
+
+    path_directory = get_path_directory()
+    regional_file_processing()  # investigate(hbe 186 but amr ase 178)
+    print("saving8...")
+    tech_complaint.daily_technology_tech_complaint_sheet_processing(assign_from_date, assign_to_date)
+    print("saving9...")
+    voice_data_pivot.regional_voice_data_pivot_table_create(path_directory)
+    print("saving10...")
+    region_wise.region_wise_radio_sheet_processing(assign_from_date, assign_to_date)
+    print("saving11...")
+
+    root.destroy()  # Close the GUI window
+
+
+root = tk.Tk()
+root.title("Regional file processing")
+
+root.geometry("400x300")  # width and height
+
+# File Selection
+btn_browse_file = tk.Button(root, text="Browse Regional File", command=browse_file)
+btn_browse_file.pack(pady=10)
+
+# Date Selection using tkcalendar
+entry_from_date = DateEntry(root, width=15, justify="center")
+entry_to_date = DateEntry(root, width=15, justify="center")
+
+# Set the date pattern directly on the DateEntry widget
+entry_from_date.date_pattern = "%Y-%m-%d"  # "2023-12-12" --> year-month-date
+entry_to_date.date_pattern = "%Y-%m-%d"
+
+entry_from_date.pack(pady=5)
+entry_to_date.pack(pady=5)
+
+btn_browse_dates = tk.Button(root, text="Apply Dates", command=browse_dates)
+btn_browse_dates.pack(pady=10)
+
+# Run Process Button
+btn_run_process = tk.Button(root, text="Run Process", command=run_process)
+btn_run_process.pack(pady=20)
+
+root.mainloop()

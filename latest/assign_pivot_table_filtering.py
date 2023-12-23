@@ -10,7 +10,7 @@ def pivot_table_creation(workbook, ws_data, ws_report, output_starting_cell, piv
     pt_cache = workbook.PivotCaches().Create(1, ws_data.Range("A1").CurrentRegion)
     pt = pt_cache.CreatePivotTable(ws_report.Range(output_starting_cell), pivot_table_name)
     pt.TableStyle2 = "PivotStyleMedium9"
-    insert_pt_field_set1(pt)  # value insert
+    insert_pt_field_set1(pt)
 
     pivot_table = ws_report.PivotTables(pivot_table_name)
     pivot_field_product = pivot_table.PivotFields("Team")
@@ -44,7 +44,7 @@ def pivot_table_creation_all(workbook, ws_data, ws_report, output_starting_cell,
     pt.ColumnGrand = True
     pt.RowGrand = False
     pt.TableStyle2 = "PivotStyleMedium9"
-    insert_pt_field_set2(pt)  # value insert
+    insert_pt_field_set2(pt)
 
     ws_report.PivotTables(pivot_table_name)
 

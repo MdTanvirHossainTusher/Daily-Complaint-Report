@@ -1,10 +1,8 @@
 import pandas as pd
 import numpy as np
 
-# all occurrence = Press Ctrl + Alt + Shift + J on Windows/Linux
-
 input_file_name = r'regional.xlsx'
-output_file_name = r'regional.xlsx'  # r'regional_1.xlsx'
+output_file_name = r'regional.xlsx'
 
 lat = 'GOOGLE_EARTH_LAT'
 long = 'GOOGLE_EARTH_LONG'
@@ -35,7 +33,7 @@ def replace_google_lat_with_latitude(df):
 
 
 def swap_google_lat_long(df):
-    # Swap GOOGLE_EARTH_LAT and GOOGLE_EARTH_LONG if GOOGLE_EARTH_LAT >= 75 and GOOGLE_EARTH_LONG <= 30
+    # Swap GOOGLE_EARTH_LAT and GOOGLE_EARTH_LONG if GOOGLE_EARTH_LAT >= 80 and GOOGLE_EARTH_LONG <= 28
     for index, row in df.iterrows():
         df[lat], df[long] = np.where((pd.isna(row[lat]) & pd.isna(row[long])) and ((df[lat] >= 80) & (df[long] <= 28)),
                                          (df[long], df[lat]),

@@ -1,6 +1,6 @@
 import openpyxl
 
-regional_file_name = r'regional.xlsx'  # r'13 Dec regional_1.xlsx'
+regional_file_name = r'regional.xlsx'
 output_file_name = r'Lat Long File.xls'
 
 
@@ -38,10 +38,6 @@ def copy_data_to_lat_long_file(regional_sheet, lat_long_sheet):
 def save_lat_long_file(lat_long_workbook):
     lat_long_file_path = output_file_name
     lat_long_workbook.save(lat_long_file_path)
-
-# Close the workbooks
-# original_workbook.close()
-# new_workbook.close()
 
 
 def lat_long_file_creation_process():
