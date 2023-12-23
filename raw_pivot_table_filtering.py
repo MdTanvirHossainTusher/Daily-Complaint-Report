@@ -1,9 +1,11 @@
 import win32com.client
 import openpyxl
+import os
+
+raw_dump_file_name = r'Raw Dump.xlsx'
 
 
 def pivot_table_creation(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name):
-
     pt_cache = workbook.PivotCaches().Create(1, ws_data.Range("A1").CurrentRegion)
     pt = pt_cache.CreatePivotTable(ws_report.Range(output_starting_cell), pivot_table_name)
     pt.TableStyle2 = "PivotStyleMedium9"
@@ -15,24 +17,24 @@ def pivot_table_creation(workbook, ws_data, ws_report, output_starting_cell, piv
 
 
 def filter_single_item(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name, filtered_team_name):
-
     pivot_field_product = pivot_table_creation(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name)
     pivot_field_product.ClearAllFilters()
     pivot_field_product.CurrentPage = filtered_team_name
 
 
 def filter_multiple_items(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name, items_to_exclude):
-
     pivot_field_product = pivot_table_creation(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name)
     pivot_field_product.ClearAllFilters()
     pivot_field_product.EnableMultiplePageItems = True
 
     for item_name in items_to_exclude:
-        pivot_field_product.PivotItems(item_name).Visible = False
+        try:
+            pivot_field_product.PivotItems(item_name).Visible = False
+        except Exception as e:
+            print(f"Item '{item_name}' not found in the pivot table. Skipping...")
 
 
 def insert_pt_field_set1(pt):
-
     field_filters = {}
     field_filters['team'] = pt.PivotFields("Team")
 
@@ -51,16 +53,17 @@ def insert_pt_field_set1(pt):
     field_values['open_date_count'].NumberFormat = "#,##0"
 
 
-def filter_item():
-    open_workbook = openpyxl.load_workbook(r'Raw Dump.xlsx')
+def filter_item(path_directory):
+    open_workbook = openpyxl.load_workbook(raw_dump_file_name)
     raw_pivot_sheet_name = "RAW Pivot"
     open_workbook.create_sheet(title=raw_pivot_sheet_name)
-    open_workbook.save(r'Raw Dump.xlsx')
+    open_workbook.save(raw_dump_file_name)
 
     excel = win32com.client.Dispatch("Excel.Application")
-    excel.Visible = True  # Optional: Set to True if you want to see Excel while the code is running
+    excel.Visible = True  # True = want to see Excel while the code is running
 
-    workbook = excel.Workbooks.Open(r'I:\Openpyxl_tutorial\Parts\Raw Dump.xlsx')
+    file_to_save = os.path.join(path_directory, raw_dump_file_name)
+    workbook = excel.Workbooks.Open(file_to_save)
 
     ws_data = workbook.Worksheets("RAW")
     ws_report = workbook.Worksheets("RAW Pivot")
@@ -83,11 +86,7 @@ def filter_item():
     filtered_team_name = "Core"
     filter_single_item(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name, filtered_team_name)
 
-    workbook.SaveAs("I:\Openpyxl_tutorial\Parts\Raw Dump.xlsx")  # Optional: Save the changes
+    workbook.SaveAs(file_to_save)
     workbook.Close()
 
     excel.Quit()
-
-
-if __name__ == "__main__":
-    filter_item()

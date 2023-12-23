@@ -1,12 +1,16 @@
 import win32com.client
 import openpyxl
+import os
+
+raw_dump_file_name = r'Raw Dump.xlsx'
+
 
 def pivot_table_creation(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name):
 
     pt_cache = workbook.PivotCaches().Create(1, ws_data.Range("A1").CurrentRegion)
     pt = pt_cache.CreatePivotTable(ws_report.Range(output_starting_cell), pivot_table_name)
     pt.TableStyle2 = "PivotStyleMedium9"
-    insert_pt_field_set1(pt)  # value insert
+    insert_pt_field_set1(pt)
 
     pivot_table = ws_report.PivotTables(pivot_table_name)
     pivot_field_product = pivot_table.PivotFields("Team")
@@ -40,7 +44,7 @@ def pivot_table_creation_all(workbook, ws_data, ws_report, output_starting_cell,
     pt.ColumnGrand = True
     pt.RowGrand = False
     pt.TableStyle2 = "PivotStyleMedium9"
-    insert_pt_field_set2(pt)  # value insert
+    insert_pt_field_set2(pt)
 
     ws_report.PivotTables(pivot_table_name)
 
@@ -89,17 +93,18 @@ def insert_pt_field_set1(pt):
     field_values['sub_category_count'].NumberFormat = "#,##0"
 
 
-def filter_item():
+def filter_item(path_directory):
 
-    open_workbook = openpyxl.load_workbook(r'Raw Dump.xlsx')
+    open_workbook = openpyxl.load_workbook(raw_dump_file_name)
     assigned_pivot_sheet_name = "Assigned Pivot"
     open_workbook.create_sheet(title=assigned_pivot_sheet_name)
-    open_workbook.save(r'Raw Dump.xlsx')
+    open_workbook.save(raw_dump_file_name)
 
     excel = win32com.client.Dispatch("Excel.Application")
     excel.Visible = True  # Optional: Set to True if you want to see Excel while the code is running
 
-    workbook = excel.Workbooks.Open(r'I:\Openpyxl_tutorial\Parts\Raw Dump.xlsx')
+    file_to_save = os.path.join(path_directory, raw_dump_file_name)
+    workbook = excel.Workbooks.Open(file_to_save)
     ws_data = workbook.Worksheets("Assigned")
     ws_report = workbook.Worksheets("Assigned Pivot")
 
@@ -126,11 +131,7 @@ def filter_item():
     pivot_table_name = "PivotTable4"
     filter_all(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name)
 
-    workbook.SaveAs("I:\Openpyxl_tutorial\Parts\Raw Dump.xlsx")  # Optional: Save the changes
+    workbook.SaveAs(file_to_save)  # Optional: Save the changes
     workbook.Close()
 
     excel.Quit()
-
-
-if __name__ == "__main__":
-    filter_item()
