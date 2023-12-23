@@ -14,7 +14,7 @@ regional_file_name = r'regional.xlsx'
 final_regional_file_name = r'regional.xlsx'
 site_to_cc_file_name_csv = r'Site to CC.csv'
 site_to_cc_file_name_excel = r'Site to CC.xlsx'
-on_air_site_file_name = r'ON AIR SITES DETAILS _230930.xlsx'
+on_air_site_file_name = r'ON AIR SITES DETAILS.xlsx'
 intermediate_regional_file_name = r'Intermediate regional file.xlsx'
 on_air_site_sheet_name = 'Sites'
 

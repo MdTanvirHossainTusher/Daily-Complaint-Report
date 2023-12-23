@@ -1,7 +1,7 @@
 import openpyxl
 from datetime import datetime, timedelta
 
-daily_technology_file_name = r'Daily Technology Complaint Report2.xlsx'
+daily_technology_file_name = r'Daily Technology Complaint Report.xlsx'
 regional_file_name = r'regional.xlsx'
 radio_voice_sheet_name = 'Region wise Radio-Voice'
 radio_data_sheet_name = 'Region wise Radio-Data'

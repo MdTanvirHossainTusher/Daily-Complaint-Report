@@ -1,0 +1,38 @@
+pyinstaller --onefile daily_dump.py
+
+cmd --> daily_dump.exe
+
+a = Analysis(
+    ['daily_dump.py'],
+    pathex=[],
+    binaries=[],
+    datas=[],
+    hiddenimports=['babel.numbers'],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    noarchive=False,
+)
+
+pyinstaller daily_dump.spec
+
+====================================================
+
+pyinstaller --onefile regional_with_sales_zone.py
+
+a = Analysis(
+    ['daily_dump.py'],
+    pathex=[],
+    binaries=[],
+    datas=[],
+    hiddenimports=['babel.numbers'],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    noarchive=False,
+)
+
+pyinstaller regional_with_sales_zone.spec
+
