@@ -1,7 +1,7 @@
 import openpyxl
 from datetime import datetime, timedelta
 
-daily_technology_file_name = r'Daily Technology Complaint Report2.xlsx'
+daily_technology_file_name = r'Daily Technology Complaint Report.xlsx'
 raw_dump = r'Raw Dump.xlsx'
 tech_complaint_sheet_name = 'Tech complaint'
 raw_pivot_sheet_name = 'RAW Pivot'
@@ -30,7 +30,6 @@ def insert_dates_to_list(assign_from_date, assign_to_date):
     # Generate a list of date strings
     date_list = [from_date_obj + timedelta(days=i) for i in range((to_date_obj - from_date_obj).days + 1)]
     formatted_date_list = [date.strftime("%d-%b") for date in date_list]
-    # print(current_year, formatted_date_list, end=" ----------------------\n ")
     return current_year, formatted_date_list
 
 
@@ -122,10 +121,6 @@ def fill_ccd_technology_fields(technology_sheet, raw_pivot_sheet, assign_pivot_s
 
 def save_file(technology_wb):
     technology_wb.save(daily_technology_file_name)
-    # technology_wb.save(r'Daily Technology Complaint Report3.xlsx')
-
-# Close the workbook
-# technology_wb.close()
 
 
 def daily_technology_tech_complaint_sheet_processing(assign_from_date, assign_to_date):

@@ -33,7 +33,6 @@ def insert_dates_to_list(assign_from_date, assign_to_date):
     # Generate a list of date strings
     date_list = [from_date_obj + timedelta(days=i) for i in range((to_date_obj - from_date_obj).days + 1)]
     formatted_date_list = [date.strftime("%d-%b") for date in date_list]
-    print(current_year, formatted_date_list, end=" ----------------------\n ")
     return current_year, formatted_date_list
 
 
@@ -60,7 +59,6 @@ def get_column_indices(region_wise_radio_voice_sheet, formatted_dates):
             if str(region_wise_radio_voice_sheet.cell(row=2, column=col_num).value).split(' ')[0] == target_date:
                 column_index = col_num
                 column_indices.append(column_index)
-                # print(column_index, end='---\n')
                 break
 
         # Check if the column was found

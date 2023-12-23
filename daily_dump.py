@@ -162,14 +162,6 @@ def run_process():
     print("saving6...")
     lat_long.lat_long_file_creation_process()
     print("saving7...")
-    # regional_zone.regional_file_processing()  # investigate(hbe 186 but amr ase 178)
-    # print("saving8...")
-    # tech_complaint.daily_technology_tech_complaint_sheet_processing(assign_from_date, assign_to_date)
-    # print("saving9...")
-    # voice_data_pivot.regional_voice_data_pivot_table_create(path_directory)
-    # print("saving10...")
-    # region_wise.region_wise_radio_sheet_processing(assign_from_date, assign_to_date)
-    # print("saving11...")
 
     root.destroy()  # Close the GUI window
 

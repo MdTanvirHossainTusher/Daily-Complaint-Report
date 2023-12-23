@@ -52,13 +52,14 @@ def csv_to_excel():
 
 
 def load_site_to_cc_workbook_sheet():
-    site_to_cc_wb = openpyxl.load_workbook(site_to_cc_file_name_excel)
+    site_to_cc_wb = openpyxl.load_workbook(site_to_cc_file_name_excel, data_only=True)
     site_to_cc_sheet = site_to_cc_wb.active
     return site_to_cc_wb, site_to_cc_sheet
 
 
 def load_on_air_site_workbook_sheet():
-    on_air_site_wb = openpyxl.load_workbook(on_air_site_file_name)
+    # ON AIR SITE file contains some formula in it. That's why "data_only=True" attribute required
+    on_air_site_wb = openpyxl.load_workbook(on_air_site_file_name, data_only=True)
     on_air_site_sheet = on_air_site_wb[on_air_site_sheet_name]
     return on_air_site_wb, on_air_site_sheet
 
@@ -115,6 +116,7 @@ def fill_district_sales_columns(regional_sheet, on_air_site_sheet):
 
         for j in on_air_site_sheet.iter_rows():
             generic_id = j[1].value
+
             if district == generic_id:
                 regional_sheet.cell(row=row_number, column=20).value = j[31].value   # j[31] = 0 based, 31 e hbe cz manually col A bad diye dhortam.
                 regional_sheet.cell(row=row_number, column=22).value = j[34].value   # j[34] = 0 based
@@ -161,12 +163,11 @@ def clean_tf_column(regional_sheet):
         if district == 'Chapai Nawabganj' and calculated_district == 'Nawabganj':
             rows[13].value = rows[19].value
             rows[20].value = 'TRUE'
-
+        elif len(district) != len(calculated_district):
+            rows[20].value = 'FALSE'
         elif district is not None and calculated_district is not None and are_strings_similar(district, calculated_district, max_allowed_diff=2):
             rows[13].value = rows[19].value
             rows[20].value = 'TRUE'
-
-    print("tf cleaned=========================\n")
 
 
 def remove_false_na_tf_values(regional_sheet):
@@ -241,7 +242,7 @@ def regional_file_processing():
 def run_process():
 
     path_directory = get_path_directory()
-    regional_file_processing()  # investigate(hbe 186 but amr ase 178)
+    regional_file_processing()
     print("saving8...")
     tech_complaint.daily_technology_tech_complaint_sheet_processing(assign_from_date, assign_to_date)
     print("saving9...")
