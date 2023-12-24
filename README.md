@@ -9,7 +9,7 @@ This report has served to the whole technology team of Banglalink. All the team 
 
 By automating the report company and technology department will get the below benefits-
 
-1. Reduce total 2-3 hours workload to 10-15 minutes
+1. Reduce total **2-3 hours** of workload to **10-15 minutes**
 2. Indirectly responsible to gain more revenue
 3. Serve the report quickly to all technology department
 4. Help to solve customer complaint quickly
@@ -22,7 +22,7 @@ By automating the report company and technology department will get the below be
 # Technologies used
 
 1. `Python` as programming language
-2. `Openpyxl` to interect with excel file and do read, write and modify oeprations
+2. `Openpyxl` to interect with excel file and do load, read, write and modify oeprations on the workbooks and worksheets
 3. `Pywin32` to make the `pivot table` from scratch in the excel sheet
 4. `PyInstaller` to build the `.exe` file
 5. `Pandas` library to clean the `lat-long` of fake customer complaint
