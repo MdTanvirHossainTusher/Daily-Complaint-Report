@@ -40,12 +40,13 @@ To run the two parts there is two seperate `.exe` file. `daily_dump.exe` is for 
 
 # Desktop Application
 
-User interface of `daily_dump.exe` and `regional_with_sales_zone.exe`-
+User interface of `daily_dump.exe` and `regional_with_sales_zone.exe`are given below-
+</br></br>
 
-<img src="images/daily dump.PNG" alt="daily dump" style="width:520px;height:420px;"></br></br>
+<img src="Images/daily dump.PNG" alt="daily dump" style="width:520px;height:420px;"></br></br>
 
-<img src="images/date.png" alt="date option" style="width:520px;height:420px;"></br></br>
+<img src="Images/date.png" alt="date option" style="width:520px;height:420px;"></br></br>
 
-<img src="images/regional with sales.PNG" alt="regional" style="width:520px;height:420px;"></br></br>
+<img src="Images/regional with sales.PNG" alt="regional" style="width:520px;height:420px;"></br></br>
 
 
