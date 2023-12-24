@@ -27,3 +27,25 @@ By automating the report company and technology department will get the below be
 4. `PyInstaller` to build the `.exe` file
 5. `Pandas` library to clean the `lat-long` of fake customer complaint
 
+
+# Run the application
+
+The whole process is divided into two parts. They are-
+1. `Daily Dump` file to `Regional` file generation
+2. `Regional` file to `Daily Technology` file fillup
+
+To run the two parts there is two seperate `.exe` file. `daily_dump.exe` is for the first part. On the other hand, `regional_with_sales_zone.exe` is for the 2nd half. For the 1st part, you need to place `Category team`, `Daily Dump`. And for the 2nd half, `regional_with_sales_zone.exe` requires `Site to CC`, `Regional`, `Daily Technology` to be in the same folder as the executable file. Here, `Site to CC` file need to produce manually using different software.
+
+**Just double-click on the `executable` file one after another to run the whole process.**
+
+# Desktop Application
+
+User interface of `daily_dump.exe` and `regional_with_sales_zone.exe`-
+
+<img src="images/daily dump.PNG" alt="daily dump" style="width:520px;height:420px;"></br></br>
+
+<img src="images/date.png" alt="date option" style="width:520px;height:420px;"></br></br>
+
+<img src="images/regional with sales.PNG" alt="regional" style="width:520px;height:420px;"></br></br>
+
+
