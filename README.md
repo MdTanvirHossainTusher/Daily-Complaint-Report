@@ -31,7 +31,8 @@ By automating the report company and technology department will get the below be
 
 # Desktop Application User Interface
 
-User interface of `daily_dump.exe` and `regional_with_sales_zone.exe`are given below-
+User interface of `daily_dump.exe` and `regional_with_sales_zone.exe`are given below where the first `Date field` is the `From date` and the 2nd one is the `To date`. **e.g:** If you want to generate the report from `8-Dec-23` to `12-Dec-23`, then `8-Dec-23` should put on the 1st field and `12-Dec-23` should put on the 2nd field.
+
 </br></br>
 
 <img src="Images/daily dump.PNG" alt="daily dump" style="width:520px;height:420px;"></br></br>
