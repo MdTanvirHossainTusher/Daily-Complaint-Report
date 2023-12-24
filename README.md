@@ -28,7 +28,7 @@ By automating the report company and technology department will get the below be
 5. `Pandas` library to clean the `lat-long` of fake customer complaint
 
 
-# Desktop Application
+# Desktop Application User Interface
 
 User interface of `daily_dump.exe` and `regional_with_sales_zone.exe`are given below-
 </br></br>
