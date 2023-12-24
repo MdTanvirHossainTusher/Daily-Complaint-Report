@@ -28,6 +28,10 @@ By automating the report company and technology department will get the below be
 5. `PyInstaller` to build the `.exe` file
 6. `Pandas` library to clean the `lat-long` of fake customer complaint
 
+# Video explanation
+
+You can find the detail video explanation in Bengali [here.](https://youtu.be/NoOQGqWKXB0)
+
 
 # Desktop Application User Interface
 
