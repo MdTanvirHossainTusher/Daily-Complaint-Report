@@ -22,7 +22,7 @@ pyinstaller daily_dump.spec
 pyinstaller --onefile regional_with_sales_zone.py
 
 a = Analysis(
-    ['daily_dump.py'],
+    ['regional_with_sales_zone.py'],
     pathex=[],
     binaries=[],
     datas=[],
