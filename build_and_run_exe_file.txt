@@ -1,6 +1,6 @@
 pyinstaller --onefile daily_dump.py
 
-cmd --> daily_dump.exe
+cmd --> daily_dump.exe (so that if any error occur cmd will not close if we run .exe file like this)
 
 a = Analysis(
     ['daily_dump.py'],

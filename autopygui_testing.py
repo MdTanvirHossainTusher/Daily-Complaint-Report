@@ -4,6 +4,11 @@ import win32com.client
 import openpyxl
 import os
 
+"""
+            This file is not a part of the project
+"""
+
+
 def click_coordinates(x, y):
     print("check====")
     pyautogui.click(x, y)

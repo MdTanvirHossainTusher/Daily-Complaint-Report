@@ -2,7 +2,7 @@ import win32com.client
 import openpyxl
 import os
 
-regional_file_name = r'regional.xlsx'
+regional_file_name = r'regional_final.xlsx'
 voice_sheet_name = "voice_pivot"
 data_sheet_name = "data_pivot"
 
@@ -73,7 +73,7 @@ def filter_item(path_directory):
 
     file_to_save = os.path.join(path_directory, regional_file_name)
     workbook = excel.Workbooks.Open(file_to_save)
-    ws_data = workbook.Worksheets("Sheet1")
+    ws_data = workbook.Worksheets("Sheet")
 
     ws_voice_pivot = workbook.Sheets(voice_sheet_name)
     ws_data_pivot = workbook.Sheets(data_sheet_name)

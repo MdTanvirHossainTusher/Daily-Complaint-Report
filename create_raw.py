@@ -1,4 +1,5 @@
 import openpyxl
+from datetime import datetime
 
 daily_dump_to_raw_dump = r'Daily_Dump(Updated).xlsx'
 team_col_index = 8  # 1 based index
@@ -39,13 +40,23 @@ def select_prv_days_from_open_date_col(daily_dump_sheet, open_from_date, open_to
         daily_dump_sheet.iter_rows(min_row=1, max_row=1, values_only=True))
     open_date_filtered_rows = [heading_row]
 
+    open_from_date = datetime.strptime(open_from_date, "%Y-%m-%d")  # "2023-12-12" --> year-month-date
+    open_to_date = datetime.strptime(open_to_date, "%Y-%m-%d")
+
     for row in daily_dump_sheet.iter_rows(min_row=1, values_only=True):  # tuple = iter_rows() --> 0 based index
 
         team_value = row[team_col_index - 1]  # 7 = Team
-        open_date_value = row[open_date_col_index]  # open date = 20
+        open_date_string = row[open_date_col_index] # open date = 20
+
+        if open_date_string == 'OPEN_DATE':
+            continue  # header row
+
+        open_date_value = datetime.strptime(open_date_string, "%Y-%m-%d") if open_date_string else None
 
         if team_value != hash_na and open_from_date <= open_date_value <= open_to_date:
             open_date_filtered_rows.append(row)
+
+    print(len(open_date_filtered_rows), end=" Open Date rows\n")
 
     return open_date_filtered_rows
 
@@ -61,14 +72,24 @@ def select_prv_assigned_date(daily_dump_sheet, assign_from_date, assign_to_date)
         daily_dump_sheet.iter_rows(min_row=1, max_row=1, values_only=True))
     assign_date_filtered_rows = [heading_row]
 
+    # Convert string dates to datetime objects
+    assign_from_date = datetime.strptime(assign_from_date, "%d-%b-%y")
+    assign_to_date = datetime.strptime(assign_to_date, "%d-%b-%y")
+
     for row in daily_dump_sheet.iter_rows(min_row=1, values_only=True):  # tuple = iter_rows() --> 0 based index
 
         team_value = row[team_col_index - 1]  # 7 = Team
-        assign_date_value = row[assign_date_col_index]  # assign date = 21
+        assign_date_string = row[assign_date_col_index] # assign date = 21
+
+        if assign_date_string == 'ASSIGNED_DATE':
+            continue  # Skip rows with header or invalid date
+
+        assign_date_value = datetime.strptime(assign_date_string, "%d-%b-%y") if assign_date_string else None
 
         if team_value != hash_na and assign_date_value is not None and assign_from_date <= assign_date_value <= assign_to_date:
             assign_date_filtered_rows.append(row)
 
+    print(len(assign_date_filtered_rows), end=" Assigned Date rows\n")
     return assign_date_filtered_rows
 
 

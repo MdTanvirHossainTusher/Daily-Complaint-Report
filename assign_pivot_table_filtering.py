@@ -131,7 +131,7 @@ def filter_item(path_directory):
     pivot_table_name = "PivotTable4"
     filter_all(workbook, ws_data, ws_report, output_starting_cell, pivot_table_name)
 
-    workbook.SaveAs(file_to_save)  # Optional: Save the changes
+    workbook.SaveAs(file_to_save)
     workbook.Close()
 
     excel.Quit()

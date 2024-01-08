@@ -11,7 +11,7 @@ import region_wise_radio_sheet as region_wise
 
 
 regional_file_name = r'regional.xlsx'
-final_regional_file_name = r'regional.xlsx'
+final_regional_file_name = r'regional_final.xlsx'
 site_to_cc_file_name_csv = r'Site to CC.csv'
 site_to_cc_file_name_excel = r'Site to CC.xlsx'
 on_air_site_file_name = r'ON AIR SITES DETAILS.xlsx'
@@ -132,7 +132,8 @@ def fill_empty_cell_with_na(regional_sheet):
 
 
 def fill_tf_column(regional_wb, regional_sheet):
-    for rows in regional_sheet.iter_rows():
+
+    for rows in regional_sheet.iter_rows(min_row=1):
         if rows[13].value is None:
             continue
         elif rows[13].value.strip().lower() == '#N/A'.lower() or rows[19].value.strip().lower() == '#N/A'.lower():
@@ -144,7 +145,7 @@ def fill_tf_column(regional_wb, regional_sheet):
         elif rows[13].value.strip().lower() is None or rows[13].value.strip().lower() == ' ' or rows[13].value.strip().lower() == '':
             rows[20].value = 'TRUE'
 
-    print("all col filled---------------------\n")
+    print("Newly added columns filled...\n")
     regional_wb.save(r'regional with filled columns.xlsx')
 
 
@@ -170,26 +171,35 @@ def clean_tf_column(regional_sheet):
             rows[20].value = 'TRUE'
 
 
-def remove_false_na_tf_values(regional_sheet):
-    for rows in regional_sheet.iter_rows():
-        tf_col = rows[20].value
-        if tf_col is not None and (tf_col.strip().lower() == 'FALSE'.strip().lower() or tf_col.strip().lower() == '#N/A'.strip().lower()):
-            regional_sheet.delete_rows(rows[0].row)
+def remove_false_na_tf_values(regional_sheet, intermediate_regional_file_name):
+
+    new_workbook = openpyxl.Workbook()
+    new_workbook.save(intermediate_regional_file_name)
+
+    regional_intermediate_wb = openpyxl.load_workbook(intermediate_regional_file_name, data_only=True)
+    regional_intermediate_sheet = regional_intermediate_wb.active
+
+    for row in regional_sheet.iter_rows():
+        tf_col = row[20].value
+        if tf_col is not None and tf_col.strip().lower() == 'true':
+            regional_intermediate_sheet.append([cell.value for cell in row])
+
+    return regional_intermediate_wb, regional_intermediate_sheet
 
 
-def save_file_with_district_tf_columns(regional_wb):
-    regional_wb.save(intermediate_regional_file_name)
+def save_file_with_district_tf_columns(regional_intermediate_wb, intermediate_regional_file_name):
+    regional_intermediate_wb.save(intermediate_regional_file_name)
 
 
-def delete_calculated_district_tf_cols(regional_sheet):
+def delete_calculated_district_tf_cols(regional_intermediate_sheet):
     columns_to_delete = [20, 21]  # district, T/F
     # Iterate over the columns to be deleted in reverse order
     for col in reversed(sorted(columns_to_delete)):
-        regional_sheet.delete_cols(col)
+        regional_intermediate_sheet.delete_cols(col)
 
 
-def save_final_regional_file(regional_wb):
-    regional_wb.save(final_regional_file_name)
+def save_final_regional_file(regional_intermediate_wb):
+    regional_intermediate_wb.save(final_regional_file_name)
 
 
 def browse_file():
@@ -208,8 +218,9 @@ def browse_dates():
     open_to_date = entry_to_date.get_date().strftime("%Y-%m-%d")
 
     # Convert assign dates to the "12-DEC-23" format
-    assign_from_date = entry_from_date.get_date().strftime("%d-%b-%y").upper()  # "12-DEC-23"
-    assign_to_date = entry_to_date.get_date().strftime("%d-%b-%y").upper()
+
+    assign_from_date = entry_from_date.get_date().strftime("%d-%b-%y")  # "12-DEC-23"
+    assign_to_date = entry_to_date.get_date().strftime("%d-%b-%y")
 
     print(f"Open From Date: {open_from_date}")
     print(f"Open To Date: {open_to_date}")
@@ -233,10 +244,10 @@ def regional_file_processing():
     fill_empty_cell_with_na(regional_sheet)
     fill_tf_column(regional_wb, regional_sheet)
     clean_tf_column(regional_sheet)
-    remove_false_na_tf_values(regional_sheet)
-    save_file_with_district_tf_columns(regional_wb)
-    delete_calculated_district_tf_cols(regional_sheet)
-    save_final_regional_file(regional_wb)
+    regional_intermediate_wb, regional_intermediate_sheet = remove_false_na_tf_values(regional_sheet, intermediate_regional_file_name)
+    save_file_with_district_tf_columns(regional_intermediate_wb, intermediate_regional_file_name)
+    delete_calculated_district_tf_cols(regional_intermediate_sheet)
+    save_final_regional_file(regional_intermediate_wb)
 
 
 def run_process():

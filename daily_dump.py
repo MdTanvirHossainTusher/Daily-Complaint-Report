@@ -42,14 +42,14 @@ def csv_to_excel_conversion():
     read_file = pd.read_csv(daily_dump_file_name_csv, dtype=str, low_memory=False)
     read_file = read_file.apply(lambda x: x.map(keep_ascii_printable))
     read_file.to_excel(daily_dump_file_name_excel, index=None, header=True)
-    print("converted ===================")
+    print("converted...")
 
 
 def load_workbook(daily_dump_file_name_excel):
     daily_dump = openpyxl.load_workbook(daily_dump_file_name_excel)
     category_team = openpyxl.load_workbook(category_team_file_name)
 
-    print("load both-----------\n")
+    print("both file loaded.\n")
     return daily_dump, category_team
 
 
@@ -121,8 +121,8 @@ def browse_dates():
     open_to_date = entry_to_date.get_date().strftime("%Y-%m-%d")
 
     # Convert assign dates to the "12-DEC-23" format
-    assign_from_date = entry_from_date.get_date().strftime("%d-%b-%y").upper()  # "12-DEC-23"
-    assign_to_date = entry_to_date.get_date().strftime("%d-%b-%y").upper()
+    assign_from_date = entry_from_date.get_date().strftime("%d-%b-%y")  # "12-DEC-23"
+    assign_to_date = entry_to_date.get_date().strftime("%d-%b-%y")
 
     print(f"Open From Date: {open_from_date}")
     print(f"Open To Date: {open_to_date}")
@@ -148,7 +148,7 @@ def daily_dump_processes():
 
 def run_process():
     daily_dump_processes()
-    print("saving...")
+    print("saving1...")
     crd.raw_dump_processes(open_from_date, open_to_date, assign_from_date, assign_to_date)
     print("saving2...")
     path_directory = get_path_directory()
@@ -162,7 +162,7 @@ def run_process():
     print("saving6...")
     lat_long.lat_long_file_creation_process()
     print("saving7...")
-
+    #
     root.destroy()  # Close the GUI window
 
 
