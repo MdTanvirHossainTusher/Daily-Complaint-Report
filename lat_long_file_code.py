@@ -20,7 +20,7 @@ def create_lat_long_file():
 
 def copy_data_to_lat_long_file(regional_sheet, lat_long_sheet):
 
-    columns_to_copy = ['ID', 'GOOGLE_EARTH_LAT', 'GOOGLE_EARTH_LAT']
+    columns_to_copy = ['ID', 'GOOGLE_EARTH_LAT', 'GOOGLE_EARTH_LONG']
     new_columns = {'ID': 1, 'GOOGLE_EARTH_LAT': 31, 'GOOGLE_EARTH_LONG': 32}
 
     # Copy headers to the new file
