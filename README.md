@@ -1,6 +1,6 @@
 # Daily-Complaint-Report-Automation
 
-A desktop app which automates the `Daily Complaint Report` of `Service Assurance Department` of the telecommunications company `Banglalink` located in Bangladesh.
+A [desktop app](https://youtu.be/NoOQGqWKXB0) which automates the `Daily Complaint Report` of `Service Assurance Department` of the telecommunications company `Banglalink` located in Bangladesh.
 
 This report has served to the whole technology team of Banglalink. All the team under the technology department gets a summaried idea about the `voice & data complaint` as well as the `hiked region/sales zone`. They also can compare the hike ratio from the data. It provides a brief idea about `RAN`, `BSM` and `Core` related complaint and the current status of the complaint. Overall, it will help the technology team members (around 200+) to take actions immediately against the customer complaint.
 
